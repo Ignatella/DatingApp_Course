@@ -5,13 +5,14 @@ import { FormsModule } from '@angular/forms';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
+import { JwtModule } from '@auth0/angular-jwt';
 
 import { AppComponent } from './app.component';
 import { NavComponent } from './nav/nav.component';
 import { AuthService } from './_services/auth.service';
 import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
-import { ErrorInterceptor, ErrorInterceptorProvider } from './_services/error.interceptor';
+import { ErrorInterceptorProvider } from './_services/error.interceptor';
 import { ListsComponent } from './lists/lists.component';
 import { MemberListComponent } from './members/member-list/member-list.component';
 import { MessagesComponent } from './messages/messages.component';
@@ -19,34 +20,38 @@ import { appRoutes } from './routes';
 import { UserService } from './_services/user.service';
 import { MemberCardComponent } from './members/member-card/member-card.component';
 
-
+export function tokenGetter() {
+  return localStorage.getItem('token');
+}
 
 @NgModule({
-   declarations: [
-      AppComponent,
-      NavComponent,
-      HomeComponent,
-      RegisterComponent,
-      ListsComponent,
-      MemberListComponent,
-      MessagesComponent,
-      MemberCardComponent
-   ],
-   imports: [
-      BrowserModule,
-      HttpClientModule,
-      FormsModule,
-      BrowserAnimationsModule,
-      BsDropdownModule.forRoot(),
-      RouterModule.forRoot(appRoutes)
-   ],
-   providers: [
-      AuthService,
-      UserService,
-      ErrorInterceptorProvider
-   ],
-   bootstrap: [
-      AppComponent
-   ]
+  declarations: [
+    AppComponent,
+    NavComponent,
+    HomeComponent,
+    RegisterComponent,
+    ListsComponent,
+    MemberListComponent,
+    MessagesComponent,
+    MemberCardComponent,
+  ],
+  imports: [
+    BrowserModule,
+    HttpClientModule,
+    FormsModule,
+    BrowserAnimationsModule,
+    BsDropdownModule.forRoot(),
+    RouterModule.forRoot(appRoutes),
+    JwtModule.forRoot({
+       config: {
+          // tslint:disable-next-line: object-literal-shorthand
+          tokenGetter: tokenGetter,
+          whitelistedDomains: ['localhost:5000'],
+          blacklistedRoutes: ['localhost:5000/api/auth']
+       }
+    })
+  ],
+  providers: [AuthService, UserService, ErrorInterceptorProvider],
+  bootstrap: [AppComponent],
 })
 export class AppModule { }
