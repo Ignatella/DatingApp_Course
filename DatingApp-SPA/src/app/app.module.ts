@@ -24,6 +24,8 @@ import { MemberCardComponent } from './members/member-card/member-card.component
 import { MemberDetailComponent } from './members/member-detail/member-detail.component';
 import { MemberDetailResolver } from './_resolvers/member-detail.resolver';
 import { MemberListResolver } from './_resolvers/member-list.resolver';
+import { MemberEditComponent } from './members/member-edit/member-edit.component';
+import { MemberEditResolver } from './_resolvers/member-edit.resolver';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -39,27 +41,35 @@ export function tokenGetter() {
     MemberListComponent,
     MessagesComponent,
     MemberCardComponent,
-    MemberDetailComponent
+    MemberDetailComponent,
+    MemberEditComponent,
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     FormsModule,
     BrowserAnimationsModule,
-    NgxGalleryModule, 
+    NgxGalleryModule,
     BsDropdownModule.forRoot(),
     TabsModule.forRoot(),
     RouterModule.forRoot(appRoutes),
     JwtModule.forRoot({
-       config: {
-          // tslint:disable-next-line: object-literal-shorthand
-          tokenGetter: tokenGetter,
-          whitelistedDomains: ['localhost:5000'],
-          blacklistedRoutes: ['localhost:5000/api/auth']
-       }
-    })
+      config: {
+        // tslint:disable-next-line: object-literal-shorthand
+        tokenGetter: tokenGetter,
+        whitelistedDomains: ['localhost:5000'],
+        blacklistedRoutes: ['localhost:5000/api/auth'],
+      },
+    }),
   ],
-  providers: [AuthService, UserService, ErrorInterceptorProvider, MemberDetailResolver, MemberListResolver],
+  providers: [
+    AuthService,
+    UserService,
+    ErrorInterceptorProvider,
+    MemberDetailResolver,
+    MemberListResolver,
+    MemberEditResolver
+  ],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
