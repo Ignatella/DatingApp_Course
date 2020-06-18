@@ -12,6 +12,12 @@ import { NgForm } from '@angular/forms';
 export class MemberEditComponent implements OnInit {
   user: User;
   @ViewChild('editForm', { static: true }) editForm: NgForm;
+  @HostListener('window:beforeunload', ['$event'])
+  unloadNotification($event: any){
+    if (this.editForm.dirty){
+      $event.returnValue = true;
+    }
+  }
 
   constructor(private route: ActivatedRoute, private alertify: AlertifyService) {
     this.route.data.subscribe((data) => {
