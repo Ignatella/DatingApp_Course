@@ -2,7 +2,11 @@
   <div class="col-sm-2" *ngFor="let photo of photos">
     <img src="{{photo.url}}" class="img-thumbnail p-1" alt="">
     <div class="text-center mb-2">
-      <button type="button" class="btn btn-sm">Main</button>
+      <button type="button" 
+        (click)="setMainPhotoForUser(photo)" 
+        [disabled]="photo.isMain"
+        [ngClass]="photo.isMain ? 'btn-success active' : 'btn-secondary'"
+        class="btn btn-sm mr-1">Main</button>
       <button type="button" class="btn btn-sm btn-danger"><i class="fa fa-trash-o"></i></button>
     </div>
   </div>
@@ -14,11 +18,8 @@
 
     <h3>Add Photos</h3>
 
-    <div ng2FileDrop 
-      [ngClass]="{'nv-file-over': hasBaseDropZoneOver}" 
-      (fileOver)="fileOverBase($event)"
-      [uploader]="uploader"
-      class="card bg-faded p-3 text-center mb-3 my-drop-zone">
+    <div ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropZoneOver}" (fileOver)="fileOverBase($event)"
+      [uploader]="uploader" class="card bg-faded p-3 text-center mb-3 my-drop-zone">
       <i class="fa fa-upload fa-3x"></i>
       Drop photos here
     </div>
