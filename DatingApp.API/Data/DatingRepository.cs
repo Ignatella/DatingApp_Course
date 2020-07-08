@@ -28,10 +28,17 @@ namespace DatingApp.API.Data
         public async Task<User> GetUser(int id) => 
             await context.Users.Include(u => u.Photos).FirstOrDefaultAsync(u => u.Id == id);
           
-        public async Task<PagedList<User>> GetUsers(UserParams userParams) =>
-            await PagedList<User>
-                .CreateAsync(context.Users.Include(u => u.Photos), userParams.PageNumber, userParams.PageSize);
-    
+        public async Task<PagedList<User>> GetUsers(UserParams userParams){
+
+            var users = context.Users.Include(u => u.Photos).AsQueryable();
+
+            users = users.Where(u => u.Id != userParams.UserId);
+            users = users.Where(u => u.Gender == userParams.Gender);
+
+            return await PagedList<User>
+                .CreateAsync(users, userParams.PageNumber, userParams.PageSize);
+        }
+            
         public async Task<bool> SaveAll() => 
             await context.SaveChangesAsync() > 0;
     }
