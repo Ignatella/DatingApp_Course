@@ -30,6 +30,7 @@ export class MemberListComponent implements OnInit {
     });
 
     this.userParams.gender = this.user.gender === 'male' ? 'female' : 'male';
+    this.userParams.orderBy = 'lastActive';
   }
 
   resetFilter(): void {
